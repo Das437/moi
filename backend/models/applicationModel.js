@@ -65,6 +65,30 @@ const applicationSchema = new Schema({
         type: String,
         required: true,
     },
+    visanumber: {
+        type: String,
+        required: true,
+    },
+    applicationumber: {
+        type: String,
+        required: true,
+    },
+    visaowner: {
+        type: String,
+        required: true,
+    },
+    passporttype: {
+        type: String,
+        required: true,
+    },
+    dateofissue: {
+        type: String,
+        required: true,
+    },
+    visavalidity: {
+        type: String,
+        required: true,
+    },
     basicsalary: {
         type: String,
         required: true,
@@ -92,7 +116,7 @@ const applicationSchema = new Schema({
     apllicationstatus: {
         type: String,
         required: true,
-        default : "pending"
+        default: "pending"
     }
 
 }

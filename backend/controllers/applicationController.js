@@ -6,7 +6,7 @@ import errorHandler from "../utils/errorHandler.js";
 const createApllication = CatchAsyncError(async (req, res, next) => {
 
 
-    const { firstname, lastname, dateofbirth, placeofbirth, passportnation, passportno, passportexpirydate, phoneno, gender, sponsername, purposeofvisa, profession, email, education, contractyear, probationmonth, basicsalary, houseallowance, transportallowance, foodallowance, otherallowance, totalsalary, ticketduration } = req.body
+    const { firstname, lastname, dateofbirth, placeofbirth, passportnation, passportno, passportexpirydate, phoneno, gender, sponsername, purposeofvisa, profession, email, education, contractyear, probationmonth, visanumber, applicationumber, visaowner, passporttype, dateofissue, visavalidity, basicsalary, houseallowance, transportallowance, foodallowance, otherallowance, totalsalary, ticketduration } = req.body
 
     if (!firstname) {
         return next(new errorHandler("First Name is reurired ", 404));
@@ -56,6 +56,24 @@ const createApllication = CatchAsyncError(async (req, res, next) => {
     if (!probationmonth) {
         return next(new errorHandler("No Of Probation Months is reurired ", 404));
     }
+    if (!visanumber) {
+        return next(new errorHandler("Visa Number is reurired ", 404));
+    }
+    if (!applicationumber) {
+        return next(new errorHandler("Application Number is reurired ", 404));
+    }
+    if (!visaowner) {
+        return next(new errorHandler("Description Of Visa Owner is reurired ", 404));
+    }
+    if (!passporttype) {
+        return next(new errorHandler("Passport Type is reurired ", 404));
+    }
+    if (!dateofissue) {
+        return next(new errorHandler("Date Of Issue is reurired ", 404));
+    }
+    if (!visavalidity) {
+        return next(new errorHandler("Visa Validity is reurired ", 404));
+    }
     if (!basicsalary) {
         return next(new errorHandler("Basic Salary is reurired ", 404));
     }
@@ -77,7 +95,7 @@ const createApllication = CatchAsyncError(async (req, res, next) => {
 
 
     const apllication = new applicationModel({
-        firstname, lastname, dateofbirth, placeofbirth, passportnation, passportno, passportexpirydate, phoneno, gender, sponsername, purposeofvisa, profession, email, education, contractyear, probationmonth, basicsalary, houseallowance, transportallowance, foodallowance, otherallowance, totalsalary, ticketduration
+        firstname, lastname, dateofbirth, placeofbirth, passportnation, passportno, passportexpirydate, phoneno, gender, sponsername, purposeofvisa, profession, email, education, contractyear, probationmonth, visanumber, applicationumber, visaowner, passporttype, dateofissue, visavalidity, basicsalary, houseallowance, transportallowance, foodallowance, otherallowance, totalsalary, ticketduration
     })
 
     const result = await apllication.save()
@@ -134,5 +152,23 @@ const getApplication = CatchAsyncError(async (req, res, next) => {
 
 
 })
+const getApplicationPost = CatchAsyncError(async (req, res, next) => {
 
-export { createApllication, updateApllication, getAllApplication, getApplication }
+    const { visanumber } = req.body;
+
+
+
+    const application = await applicationModel.find({ visanumber })
+
+    if (application.length == 0) {
+        return next(new errorHandler("Application not found with this Visa Number", 404));
+    }
+
+    res.status(200).json({
+        application: application[0]
+    })
+
+
+})
+
+export { createApllication, updateApllication, getAllApplication, getApplication, getApplicationPost }
