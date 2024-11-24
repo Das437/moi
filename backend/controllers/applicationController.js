@@ -154,14 +154,12 @@ const getApplication = CatchAsyncError(async (req, res, next) => {
 })
 const getApplicationPost = CatchAsyncError(async (req, res, next) => {
 
-    const { visanumber } = req.body;
+    const { passportno } = req.body;
 
-
-
-    const application = await applicationModel.find({ visanumber })
+    const application = await applicationModel.find({ passportno })
 
     if (application.length == 0) {
-        return next(new errorHandler("Application not found with this Visa Number", 404));
+        return next(new errorHandler("Application not found with this Passport No", 404));
     }
 
     res.status(200).json({
