@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import applicationModel from "../models/applicationModel.js"
 import CatchAsyncError from "../utils/CatchAsyncError.js";
 import errorHandler from "../utils/errorHandler.js";
+import { application } from "express";
 
 const createApllication = CatchAsyncError(async (req, res, next) => {
 
@@ -154,9 +155,18 @@ const getApplication = CatchAsyncError(async (req, res, next) => {
 })
 const getApplicationPost = CatchAsyncError(async (req, res, next) => {
 
-    const { passportno } = req.body;
+    let { passportno, passportnation, visanumber } = req.body;
 
-    const application = await applicationModel.find({ passportno })
+    var apllication = []
+
+    passportnation = passportnation.toLowerCase()
+
+    if (visanumber == undefined) {
+        var application = await applicationModel.find({ passportno })
+
+    } else {
+        var application = await applicationModel.find({ passportno })
+    }
 
     if (application.length == 0) {
         return next(new errorHandler("Application not found with this Passport No", 404));

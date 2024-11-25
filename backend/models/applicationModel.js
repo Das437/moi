@@ -20,6 +20,7 @@ const applicationSchema = new Schema({
     passportnation: {
         type: String,
         required: true,
+        lowercase: true
     },
     passportno: {
         type: String,
