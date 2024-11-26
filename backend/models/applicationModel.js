@@ -114,6 +114,10 @@ const applicationSchema = new Schema({
         type: String,
         required: true,
     },
+    visatype: {
+        type: String,
+        required: true,
+    },
     apllicationstatus: {
         type: String,
         required: true,

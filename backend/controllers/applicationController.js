@@ -7,7 +7,7 @@ import { application } from "express";
 const createApllication = CatchAsyncError(async (req, res, next) => {
 
 
-    const { firstname, lastname, dateofbirth, placeofbirth, passportnation, passportno, passportexpirydate, phoneno, gender, sponsername, purposeofvisa, profession, email, education, contractyear, probationmonth, visanumber, applicationumber, visaowner, passporttype, dateofissue, visavalidity, basicsalary, houseallowance, transportallowance, foodallowance, otherallowance, totalsalary, ticketduration } = req.body
+    const { firstname, lastname, dateofbirth, placeofbirth, passportnation, passportno, passportexpirydate, phoneno, gender, sponsername, purposeofvisa, profession, email, education, contractyear, probationmonth, visanumber, applicationumber, visaowner, passporttype, dateofissue, visavalidity, basicsalary, houseallowance, transportallowance, foodallowance, otherallowance, totalsalary, ticketduration, visatype } = req.body
 
     if (!firstname) {
         return next(new errorHandler("First Name is reurired ", 404));
@@ -93,10 +93,13 @@ const createApllication = CatchAsyncError(async (req, res, next) => {
     if (!ticketduration) {
         return next(new errorHandler("Ticket Duration is reurired ", 404));
     }
+    if (!visatype) {
+        return next(new errorHandler("Visa Type is reurired ", 404));
+    }
 
 
     const apllication = new applicationModel({
-        firstname, lastname, dateofbirth, placeofbirth, passportnation, passportno, passportexpirydate, phoneno, gender, sponsername, purposeofvisa, profession, email, education, contractyear, probationmonth, visanumber, applicationumber, visaowner, passporttype, dateofissue, visavalidity, basicsalary, houseallowance, transportallowance, foodallowance, otherallowance, totalsalary, ticketduration
+        firstname, lastname, dateofbirth, placeofbirth, passportnation, passportno, passportexpirydate, phoneno, gender, sponsername, purposeofvisa, profession, email, education, contractyear, probationmonth, visanumber, applicationumber, visaowner, passporttype, dateofissue, visavalidity, basicsalary, houseallowance, transportallowance, foodallowance, otherallowance, totalsalary, ticketduration, visatype
     })
 
     const result = await apllication.save()
