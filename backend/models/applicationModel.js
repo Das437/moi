@@ -122,6 +122,11 @@ const applicationSchema = new Schema({
         type: String,
         required: true,
         default: "pending"
+    },
+    isadminprinted: {
+        type: String,
+        required: true,
+        default: "no"
     }
 
 }

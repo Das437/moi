@@ -182,4 +182,22 @@ const getApplicationPost = CatchAsyncError(async (req, res, next) => {
 
 })
 
-export { createApllication, updateApllication, getAllApplication, getApplication, getApplicationPost }
+const updateAdminPrint = CatchAsyncError(async (req, res, next) => {
+    const { _id, isadminprinted } = req.body;
+    
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return next(new errorHandler("Please enter vaild user id", 404));
+    }
+
+    const result = await applicationModel.findByIdAndUpdate(_id, { isadminprinted })
+
+    if (!result) {
+        return next(new errorHandler("Application not found with this ID", 404));
+    }
+
+    res.status(200).json({
+        message: "Admin Print Succesfully"
+    })
+})
+
+export { createApllication, updateApllication, getAllApplication, getApplication, getApplicationPost, updateAdminPrint }
