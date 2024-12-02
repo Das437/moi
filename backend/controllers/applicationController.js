@@ -111,13 +111,36 @@ const createApllication = CatchAsyncError(async (req, res, next) => {
 })
 
 const updateApllication = CatchAsyncError(async (req, res, next) => {
+    const { id } = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return next(new errorHandler("Please enter vaild application id", 404));
+    }
+
+    const apllication = await applicationModel.findById(id)
+    if (apllication.apllicationstatus == "reject" || apllication.apllicationstatus == "accept") {
+        return next(new errorHandler(`Application already ${apllication.apllicationstatus}`, 406));
+    }
+
+    const result = await applicationModel.findByIdAndUpdate(id, req.body)
+
+    if (!result) {
+        return next(new errorHandler("Application not found with this ID", 404));
+    }
+
+    res.status(200).json({
+        message: "Application Updated Succesfully"
+    })
+})
+
+const updateApllicationStatus = CatchAsyncError(async (req, res, next) => {
     const { _id, apllicationstatus } = req.body;
     if (!mongoose.Types.ObjectId.isValid(_id)) {
         return next(new errorHandler("Please enter vaild user id", 404));
     }
     const apllication = await applicationModel.findById(_id)
     if (apllication.apllicationstatus == "reject" || apllication.apllicationstatus == "accept") {
-        return next(new errorHandler("Application Already Updated", 406));
+        return next(new errorHandler(`Application already ${apllication.apllicationstatus}`, 406));
     }
 
     const result = await applicationModel.findByIdAndUpdate(_id, { apllicationstatus })
@@ -184,7 +207,7 @@ const getApplicationPost = CatchAsyncError(async (req, res, next) => {
 
 const updateAdminPrint = CatchAsyncError(async (req, res, next) => {
     const { _id, isadminprinted } = req.body;
-    
+
     if (!mongoose.Types.ObjectId.isValid(_id)) {
         return next(new errorHandler("Please enter vaild user id", 404));
     }
@@ -200,4 +223,22 @@ const updateAdminPrint = CatchAsyncError(async (req, res, next) => {
     })
 })
 
-export { createApllication, updateApllication, getAllApplication, getApplication, getApplicationPost, updateAdminPrint }
+const deleteApplication = CatchAsyncError(async (req, res, next) => {
+    const id = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return next(new errorHandler("Please enter vaild application id", 404));
+    }
+
+    const result = await applicationModel.findByIdAndDelete(id)
+
+    if (!result) {
+        return next(new errorHandler("Application not found with this ID", 404));
+    }
+
+    res.status(200).json({
+        message: "Application Deleted Succesfully"
+    })
+})
+
+export { createApllication, deleteApplication, updateApllication, getAllApplication, getApplication, getApplicationPost, updateAdminPrint, updateApllicationStatus }

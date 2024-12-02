@@ -1,11 +1,13 @@
 import express from "express"
-import { createApllication, getAllApplication, getApplication, getApplicationPost, updateAdminPrint, updateApllication } from "../controllers/applicationController.js";
+import { createApllication, deleteApplication, getAllApplication, getApplication, getApplicationPost, updateAdminPrint, updateApllication, updateApllicationStatus } from "../controllers/applicationController.js";
 import isAuthorized from "../middleware/isAuthorized.js";
 
 const router = express.Router();
 
 router.post("/create", createApllication);
-router.put("/update", updateApllication);
+router.delete("/delete/:id", deleteApplication);
+router.put("/update/status", updateApllicationStatus);
+router.put("/update/:id", updateApllication);
 router.put("/print", updateAdminPrint);
 router.get("/get/:id", getApplication);
 router.post("/get/", getApplicationPost);
